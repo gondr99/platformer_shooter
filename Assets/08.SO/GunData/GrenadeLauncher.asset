@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be55d62ce2554ca4a9dd0e0ce8dc9c78, type: 3}
+  m_Name: GrenadeLauncher
+  m_EditorClassIdentifier: 
+  gunSprite: {fileID: -901226303, guid: d7582038cf26a3640b19172d0face444, type: 3}
+  gunName: GrenadeLauncher
+  gunSpritePosition: {x: 0.8, y: 0, z: 0}
+  firePosTrmPosition: {x: 0.832, y: 0.1, z: 0}
+  damage: 20
+  maxAmmo: 10
+  reloadTime: 3
+  cooldown: 1
+  knockBackPower: 3
+  bulletPrefab: {fileID: 3566132544737468643, guid: ed351a2a5262e904e999c7f3e59b6a26, type: 3}

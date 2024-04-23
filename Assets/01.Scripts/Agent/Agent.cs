@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Agent : MonoBehaviour
+public abstract class Agent : MonoBehaviour
 {
 
     [Header("Settings")]
@@ -10,6 +10,7 @@ public class Agent : MonoBehaviour
     #region component region
     public AgentMovement MovementCompo { get; protected set; }
     public Animator AnimatorCompo { get; protected set; }
+    public Health HealthCompo { get; protected set; }
     #endregion
 
     public bool isDead;
@@ -20,6 +21,8 @@ public class Agent : MonoBehaviour
     {
         MovementCompo = GetComponent<AgentMovement>();
         AnimatorCompo = transform.Find("Visual").GetComponent<Animator>();
+        HealthCompo = GetComponent<Health>();
+        HealthCompo.Initialize(this);
     }
 
     #region more effective gravity section
@@ -62,4 +65,6 @@ public class Agent : MonoBehaviour
         }
     }
     #endregion
+
+    public abstract void SetDead();
 }

@@ -9,9 +9,9 @@ public class EnemyStateMachine
 
     public void Initialize(EnemyEnum startState, Enemy enemy)
     {
+        _enemyBase = enemy;
         CurrentState = StateDictionary[startState];
         CurrentState.Enter();
-        _enemyBase = enemy;
     }
 
     public void ChangeState(EnemyEnum newState, bool forceMode = false)

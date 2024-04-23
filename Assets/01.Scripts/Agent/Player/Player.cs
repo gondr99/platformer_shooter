@@ -64,4 +64,9 @@ public class Player : Agent
         _timeInAir = 0;
         MovementCompo.Jump();
     }
+
+    public override void SetDead()
+    {
+        // not yet
+    }
 }

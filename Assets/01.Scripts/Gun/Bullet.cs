@@ -5,11 +5,19 @@ public class Bullet : Projectile, IPoolable
     [SerializeField] private float _moveSpeed = 15f;
     [SerializeField] private float _lifeTime = 2f;
 
+    private DamageCaster _damageCaster;
+
     private int _damage;
     private float _knockBackPower;
     private Vector2 _fireDirection;
 
     public string ItemName => "Bullet";
+
+    protected override void Awake()
+    {
+        base.Awake();
+        _damageCaster = transform.Find("DamageCaster").GetComponent<DamageCaster>();
+    }
 
     public override void InitAndFire(Transform firePosTrm, int damage, float knockBackPower)
     {
@@ -38,6 +46,8 @@ public class Bullet : Projectile, IPoolable
         _isDead = true;
         var effect = PoolManager.Instance.Pop("BulletImpact") as EffectPlayer;
         effect.SetPositionAndPlay(transform.position);
+
+        _damageCaster.CastDamage(_damage, _knockBackPower);
 
         DestroyBullet();
     }

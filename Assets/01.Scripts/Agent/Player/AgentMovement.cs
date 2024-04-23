@@ -1,4 +1,4 @@
-using System;
+using System.Collections;
 using UnityEngine;
 
 public class AgentMovement : MonoBehaviour
@@ -11,12 +11,14 @@ public class AgentMovement : MonoBehaviour
     public float jumpPower = 7f;
     [SerializeField] private LayerMask _whatIsGround;
     [SerializeField] private Vector2 _groundCheckerSize;
+    [SerializeField] private float _knockbackTime = 0.2f;
 
     public Rigidbody2D RbCompo { get; private set; }
     public NotifyValue<bool> isGround = new NotifyValue<bool>();
 
     protected float _xMove;
-
+    protected bool _canMove = true;
+    protected Coroutine _knockbackCoroutine;
 
     private void Awake()
     {
@@ -43,10 +45,27 @@ public class AgentMovement : MonoBehaviour
         RbCompo.AddForce(Vector2.up * jumpPower * multiplier, ForceMode2D.Impulse);
     }
 
+    public void JumpTo(Vector2 force)
+    {
+        SetMovement(force.x);
+        RbCompo.AddForce(force, ForceMode2D.Impulse);
+    }
+
     private void FixedUpdate()
     {
-        isGround.Value = CheckGrounded();
+        CheckGround();
+        ApplyXMove();
+    }
+
+    private void ApplyXMove()
+    {
+        if (!_canMove) return;
         RbCompo.velocity = new Vector2(_xMove * moveSpeed, RbCompo.velocity.y);
+    }
+
+    private void CheckGround()
+    {
+        isGround.Value = CheckGrounded();
     }
 
     public bool CheckGrounded()
@@ -61,6 +80,35 @@ public class AgentMovement : MonoBehaviour
         RbCompo.AddForce(force);
     }
 
+
+    #region Knockback Section
+    public void GetKnockedBack(Vector3 direction, float power)
+    {
+        Vector3 difference = direction * power * RbCompo.mass;
+        RbCompo.AddForce(difference, ForceMode2D.Impulse);
+        if (_knockbackCoroutine != null)
+        {
+            StopCoroutine(_knockbackCoroutine);
+        }
+        _knockbackCoroutine = StartCoroutine(KnockbackRoutine());
+    }
+
+    private IEnumerator KnockbackRoutine()
+    {
+        _canMove = false;
+        yield return new WaitForSeconds(_knockbackTime);
+        RbCompo.velocity = Vector2.zero;
+        _canMove = true;
+    }
+
+    public void ClearKnockback()
+    {
+        RbCompo.velocity = Vector2.zero;
+        _canMove = true;
+    }
+    #endregion
+
+
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {
@@ -71,6 +119,6 @@ public class AgentMovement : MonoBehaviour
         Gizmos.color = Color.white;
     }
 
-    
+
 #endif
 }

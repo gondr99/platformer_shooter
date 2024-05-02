@@ -167,7 +167,19 @@ MonoBehaviour:
     m_Bits: 64
   OnExplosionEvent:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6589534477538354278}
+        m_TargetAssemblyTypeName: FeedbackPlayer, Assembly-CSharp
+        m_MethodName: PlayFeedback
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _launchPower: 20
   _torguePower: 1
   _lifeTime: 5
@@ -185,6 +197,7 @@ GameObject:
   - component: {fileID: 6589534477538354278}
   - component: {fileID: 9088063486485653260}
   - component: {fileID: 7945887455890456816}
+  - component: {fileID: 8182812052846459094}
   m_Layer: 0
   m_Name: ExpFeedback
   m_TagString: Untagged
@@ -285,3 +298,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _impulsePower: 0.5
+--- !u!114 &8182812052846459094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3592721680318587089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae399a5dea87594459bf89cae33ddb4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  effectItemName: Explosion

@@ -21,4 +21,4 @@ MonoBehaviour:
   reloadTime: 3
   cooldown: 1
   knockBackPower: 3
-  bulletPrefab: {fileID: 3566132544737468643, guid: ed351a2a5262e904e999c7f3e59b6a26, type: 3}
+  bulletPrefab: {fileID: 2158607083578926437, guid: 987bc706e36dd2a4ca69d229621962cc, type: 3}

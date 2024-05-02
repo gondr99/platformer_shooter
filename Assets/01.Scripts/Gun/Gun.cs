@@ -41,7 +41,7 @@ public class Gun : MonoBehaviour
             yield return null;
         }
         reloadTimer.Value = gunData.reloadTime;
-        bulletCount.Value = gunData.maxAmmo; //ÃÖ´ë AMMO Ã¤¿ì±â
+        bulletCount.Value = gunData.maxAmmo; //ï¿½Ö´ï¿½ AMMO Ã¤ï¿½ï¿½ï¿½
         OnReloadEvent?.Invoke(false);
     }
 
@@ -84,7 +84,7 @@ public class Gun : MonoBehaviour
     private void ShootProjectile()
     {
         //Projectile newBullet = Instantiate(gunData.bulletPrefab);
-        Bullet newBullet = PoolManager.Instance.Pop(gunData.bulletPrefab.name) as Bullet;
+        Projectile newBullet = PoolManager.Instance.Pop(gunData.bulletPrefab.name) as Projectile;
         newBullet.InitAndFire(firePosTrm, gunData.damage, gunData.knockBackPower);
     }
 

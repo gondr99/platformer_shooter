@@ -27,10 +27,6 @@ public class AgentMovement : MonoBehaviour
 
     public void SetMovement(float xMove)
     {
-        if(gameObject.name ==  "ToastZombie")
-        {
-            Debug.Log(xMove);
-        }
         _xMove = xMove;
     }
 

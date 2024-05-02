@@ -80,6 +80,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Reload"",
+                    ""type"": ""Button"",
+                    ""id"": ""42732c90-6c42-44f1-8bee-09bc6a7924c0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -192,6 +201,17 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""Fire"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""689a45a7-7b13-4b8d-97eb-c697cea4990f"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""keymouse"",
+                    ""action"": ""Reload"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -223,6 +243,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_Player_ChangeOne = m_Player.FindAction("ChangeOne", throwIfNotFound: true);
         m_Player_ChangeTwo = m_Player.FindAction("ChangeTwo", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
+        m_Player_Reload = m_Player.FindAction("Reload", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -290,6 +311,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_ChangeOne;
     private readonly InputAction m_Player_ChangeTwo;
     private readonly InputAction m_Player_Fire;
+    private readonly InputAction m_Player_Reload;
     public struct PlayerActions
     {
         private @Controls m_Wrapper;
@@ -300,6 +322,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @ChangeOne => m_Wrapper.m_Player_ChangeOne;
         public InputAction @ChangeTwo => m_Wrapper.m_Player_ChangeTwo;
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
+        public InputAction @Reload => m_Wrapper.m_Player_Reload;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -327,6 +350,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Fire.started += instance.OnFire;
             @Fire.performed += instance.OnFire;
             @Fire.canceled += instance.OnFire;
+            @Reload.started += instance.OnReload;
+            @Reload.performed += instance.OnReload;
+            @Reload.canceled += instance.OnReload;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -349,6 +375,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Fire.started -= instance.OnFire;
             @Fire.performed -= instance.OnFire;
             @Fire.canceled -= instance.OnFire;
+            @Reload.started -= instance.OnReload;
+            @Reload.performed -= instance.OnReload;
+            @Reload.canceled -= instance.OnReload;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -383,5 +412,6 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnChangeOne(InputAction.CallbackContext context);
         void OnChangeTwo(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
+        void OnReload(InputAction.CallbackContext context);
     }
 }

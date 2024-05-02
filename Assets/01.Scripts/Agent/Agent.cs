@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public abstract class Agent : MonoBehaviour
@@ -16,10 +17,12 @@ public abstract class Agent : MonoBehaviour
     public bool isDead;
 
     protected float _timeInAir;
+    public event Action OnFlipEvent;
 
     protected virtual void Awake()
     {
         MovementCompo = GetComponent<AgentMovement>();
+        MovementCompo.Initialize();
         AnimatorCompo = transform.Find("Visual").GetComponent<Animator>();
         HealthCompo = GetComponent<Health>();
         HealthCompo.Initialize(this);
@@ -55,13 +58,15 @@ public abstract class Agent : MonoBehaviour
 
     public void HandleSpriteFlip(Vector3 targetPosition)
     {
-        if (targetPosition.x < transform.position.x)
+        if (targetPosition.x < transform.position.x && IsFacingRight())
         {
             transform.eulerAngles = new Vector3(0f, -180f, 0f);
+            OnFlipEvent?.Invoke();
         }
-        else
+        else if(targetPosition.x > transform.position.x && !IsFacingRight())
         {
             transform.eulerAngles = new Vector3(0f, 0f, 0f);
+            OnFlipEvent?.Invoke();
         }
     }
     #endregion

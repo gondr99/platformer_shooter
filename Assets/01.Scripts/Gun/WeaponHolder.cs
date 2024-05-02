@@ -6,14 +6,17 @@ public class WeaponHolder : MonoBehaviour
 {
     [SerializeField] private CharDataListSO _charList;
     [SerializeField] private Gun _gunPrefab;
+    [SerializeField] private ReloadUI _reloadUI;
 
     public NotifyValue<Gun> currentGun;
+
 
     private Transform _playerTrm;
     private InputReader _playerInput;
     private List<Gun> _gunList;
 
     private bool _isFiring = false;
+    private bool _isReloading = false;
 
     public void Initialize(Player player)
     {
@@ -26,6 +29,7 @@ public class WeaponHolder : MonoBehaviour
         currentGun.Value = _gunList[0];//Set first gun
         _playerInput.OnCharacterChangeEvent += HandleCharacterChangeEvent;
         _playerInput.OnFireKeyEvent += HandleFireKeyEvent;
+        _playerInput.OnReloadKeyEvent += HandleReloadKeyEvent;
     }
 
     private void OnDestroy()
@@ -33,6 +37,7 @@ public class WeaponHolder : MonoBehaviour
         currentGun.OnValueChanged -= HandleGunChanged; //Gun change event unSubscribe;
         _playerInput.OnCharacterChangeEvent -= HandleCharacterChangeEvent;
         _playerInput.OnFireKeyEvent -= HandleFireKeyEvent;
+        _playerInput.OnReloadKeyEvent -= HandleReloadKeyEvent;
     }
 
     private void Update()
@@ -77,10 +82,14 @@ public class WeaponHolder : MonoBehaviour
         if (prev != null)
         {
             prev.gameObject.SetActive(false);
+            prev.OnReloadEvent.RemoveListener(HandleReloadingStatus);
+            prev.reloadTimer.OnValueChanged -= HandleReloadValueChange;
         }
         if (now != null)
         {
             now.gameObject.SetActive(true);
+            now.OnReloadEvent.AddListener(HandleReloadingStatus);
+            now.reloadTimer.OnValueChanged += HandleReloadValueChange;
         }
     }
 
@@ -94,6 +103,23 @@ public class WeaponHolder : MonoBehaviour
         _isFiring = value;
     }
 
+    private void HandleReloadKeyEvent()
+    {
+        if (_isReloading) return;
+        currentGun.Value.Reload();
+    }
+
+    private void HandleReloadingStatus(bool status)
+    {
+        _isReloading = status;
+        _reloadUI.gameObject.SetActive(status);
+    }
+
+    private void HandleReloadValueChange(float prev, float next)
+    {
+        float totalTime = currentGun.Value.gunData.reloadTime;
+        _reloadUI.SetBarNormalizedValue(next / totalTime);
+    }
     #endregion
 
 }

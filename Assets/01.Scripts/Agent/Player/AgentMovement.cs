@@ -16,23 +16,27 @@ public class AgentMovement : MonoBehaviour
     public Rigidbody2D RbCompo { get; private set; }
     public NotifyValue<bool> isGround = new NotifyValue<bool>();
 
-    protected float _xMove;
+    [SerializeField] protected float _xMove;
     protected bool _canMove = true;
     protected Coroutine _knockbackCoroutine;
 
-    private void Awake()
+    public void Initialize()
     {
         RbCompo = GetComponent<Rigidbody2D>();
     }
 
     public void SetMovement(float xMove)
     {
+        if(gameObject.name ==  "ToastZombie")
+        {
+            Debug.Log(xMove);
+        }
         _xMove = xMove;
     }
 
     public void StopImmediately(bool isYStop = false)
     {
-        _xMove = 0;
+        SetMovement(0);
         if (isYStop)
             RbCompo.velocity = Vector2.zero;
         else

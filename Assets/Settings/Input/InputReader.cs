@@ -12,6 +12,7 @@ public class InputReader : ScriptableObject, IPlayerActions
     public Action<int> OnCharacterChangeEvent;
 
     public Action<bool> OnFireKeyEvent;
+    public Action OnReloadKeyEvent;
 
     public Vector2 Movement { get; private set; }
     public Vector2 MousePos { get; private set; }
@@ -64,5 +65,11 @@ public class InputReader : ScriptableObject, IPlayerActions
             OnFireKeyEvent?.Invoke(true);
         if (context.canceled)
             OnFireKeyEvent?.Invoke(false);
+    }
+
+    public void OnReload(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+            OnReloadKeyEvent?.Invoke();
     }
 }

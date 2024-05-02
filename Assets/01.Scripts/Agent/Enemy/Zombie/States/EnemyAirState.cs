@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class EnemyAirState : EnemyState
 {
     public EnemyAirState(Enemy enemy, EnemyStateMachine stateMachine, string animBoolName) : base(enemy, stateMachine, animBoolName)

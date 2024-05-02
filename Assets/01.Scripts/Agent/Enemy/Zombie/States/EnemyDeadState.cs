@@ -26,14 +26,15 @@ public class EnemyDeadState : EnemyState
         if (_endTriggerCalled && !_onExplosion)
         {
             _onExplosion = true;
-            PlayExplosion();
+            InvokeFinalDead();
         }
     }
 
-    private void PlayExplosion()
+    private void InvokeFinalDead()
     {
-        var effect = PoolManager.Instance.Pop("ZombieExplosion") as EffectPlayer;
-        effect.SetPositionAndPlay(_enemy.transform.position);
+        _enemy.FinalDeadEvent?.Invoke();
+        //var effect = PoolManager.Instance.Pop("ZombieExplosion") as EffectPlayer;
+        //effect.SetPositionAndPlay(_enemy.transform.position);
 
         IPoolable iPooalbe = _enemy.GetComponent<IPoolable>();
         if(iPooalbe != null)

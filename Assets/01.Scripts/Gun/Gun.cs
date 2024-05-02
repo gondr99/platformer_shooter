@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -5,7 +6,7 @@ public class Gun : MonoBehaviour
 {
     public UnityEvent OnShootEvent;
     public UnityEvent OnEmptyBulletEvent;
-    public UnityEvent OnReloadEvent;
+    public UnityEvent<bool> OnReloadEvent;
 
     public Transform firePosTrm;
     public GunDataSO gunData;
@@ -22,6 +23,26 @@ public class Gun : MonoBehaviour
         bulletCount = new NotifyValue<int>(gunData.maxAmmo);
         reloadTimer = new NotifyValue<float>(0);
         SetUpWeapon();
+    }
+
+    public void Reload()
+    {
+        StartCoroutine(ReloadCoroutine());
+    }
+
+    private IEnumerator ReloadCoroutine()
+    {
+        OnReloadEvent?.Invoke(true);
+        reloadTimer.Value = 0;
+
+        while(reloadTimer.Value < gunData.reloadTime)
+        {
+            reloadTimer.Value += Time.deltaTime;
+            yield return null;
+        }
+        reloadTimer.Value = gunData.reloadTime;
+        bulletCount.Value = gunData.maxAmmo; //최대 AMMO 채우기
+        OnReloadEvent?.Invoke(false);
     }
 
     private void OnEnable()

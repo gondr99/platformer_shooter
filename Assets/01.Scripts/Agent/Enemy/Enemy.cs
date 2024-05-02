@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public abstract class Enemy : Agent
 {
@@ -21,6 +22,8 @@ public abstract class Enemy : Agent
     private Collider2D[] _colliders;
 
     public DamageCaster DamageCasterCompo { get; protected set; }
+
+    public UnityEvent FinalDeadEvent;
 
     protected override void Awake()
     {

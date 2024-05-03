@@ -10,6 +10,8 @@ public class WeaponHolder : MonoBehaviour
 
     public NotifyValue<Gun> currentGun;
 
+    public NotifyValue<int> currentTotalAmmo;
+    private Dictionary<AmmoType, int> _ammoDictionary;
 
     private Transform _playerTrm;
     private InputReader _playerInput;
@@ -18,6 +20,17 @@ public class WeaponHolder : MonoBehaviour
     private bool _isFiring = false;
     private bool _isReloading = false;
 
+    public bool CanChangeWeapon()
+    {
+        //add another condition to this, later
+        return _isReloading == false;
+    }
+
+    public void ChangeWeapon(int index)
+    {
+        currentGun.Value = _gunList[index];
+    }
+
     public void Initialize(Player player)
     {
         _playerTrm = player.transform;
@@ -25,17 +38,24 @@ public class WeaponHolder : MonoBehaviour
         currentGun = new NotifyValue<Gun>();
         currentGun.OnValueChanged += HandleGunChanged; //Gun change event subscribe;
 
+        currentTotalAmmo = new NotifyValue<int>();
+        _ammoDictionary = new Dictionary<AmmoType, int>();
+        foreach (AmmoType t in Enum.GetValues(typeof(AmmoType)))
+            _ammoDictionary.Add(t, 0);
+
+
         MakeWeaponList();
         currentGun.Value = _gunList[0];//Set first gun
-        _playerInput.OnCharacterChangeEvent += HandleCharacterChangeEvent;
         _playerInput.OnFireKeyEvent += HandleFireKeyEvent;
         _playerInput.OnReloadKeyEvent += HandleReloadKeyEvent;
+
     }
+
 
     private void OnDestroy()
     {
         currentGun.OnValueChanged -= HandleGunChanged; //Gun change event unSubscribe;
-        _playerInput.OnCharacterChangeEvent -= HandleCharacterChangeEvent;
+        //_playerInput.OnCharacterChangeEvent -= HandleCharacterChangeEvent;
         _playerInput.OnFireKeyEvent -= HandleFireKeyEvent;
         _playerInput.OnReloadKeyEvent -= HandleReloadKeyEvent;
     }
@@ -48,7 +68,7 @@ public class WeaponHolder : MonoBehaviour
 
     private void ShootingLogic()
     {
-        if(_isFiring && currentGun.Value != null)
+        if (!_isReloading && _isFiring && currentGun.Value != null)
         {
             currentGun.Value.TryToShoot();
         }
@@ -90,13 +110,20 @@ public class WeaponHolder : MonoBehaviour
             now.gameObject.SetActive(true);
             now.OnReloadEvent.AddListener(HandleReloadingStatus);
             now.reloadTimer.OnValueChanged += HandleReloadValueChange;
+
+
+            if (now.gunData.infiniteAmmo)
+            {
+                currentTotalAmmo.Value = 999;
+            }
+            else
+            {
+                currentTotalAmmo.Value = _ammoDictionary[now.gunData.ammoData.type];
+            }
+            
         }
     }
 
-    private void HandleCharacterChangeEvent(int index)
-    {
-        currentGun.Value = _gunList[index];
-    }
 
     private void HandleFireKeyEvent(bool value)
     {
@@ -106,7 +133,23 @@ public class WeaponHolder : MonoBehaviour
     private void HandleReloadKeyEvent()
     {
         if (_isReloading) return;
-        currentGun.Value.Reload();
+
+        //check Available ammo
+        GunDataSO currentData = currentGun.Value.gunData;
+        
+        int ammo = currentTotalAmmo.Value;
+        if (ammo <= 0) return;
+
+        int filledAmmo = Mathf.Min(currentData.maxAmmo, ammo); //select remainammo or maxammo;
+        ammo -= filledAmmo;
+
+        _isFiring = false; //hit reload button when firing, stop firing
+        currentGun.Value.Reload(filledAmmo);
+        if (!currentData.infiniteAmmo)
+        {
+            currentTotalAmmo.Value = ammo;
+            _ammoDictionary[currentData.ammoData.type] = ammo;
+        }
     }
 
     private void HandleReloadingStatus(bool status)

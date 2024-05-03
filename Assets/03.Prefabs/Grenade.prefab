@@ -180,7 +180,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  _launchPower: 20
+  _launchPower: 15
   _torguePower: 1
   _lifeTime: 5
   _explosionRadius: 3.5

@@ -16,9 +16,10 @@ MonoBehaviour:
   gunName: AutoRifle
   gunSpritePosition: {x: 0.8, y: 0, z: 0}
   firePosTrmPosition: {x: 0.737, y: 0.139, z: 0}
+  infiniteAmmo: 1
   damage: 2
   maxAmmo: 30
   reloadTime: 1
   cooldown: 0.15
   knockBackPower: 1.2
-  bulletPrefab: {fileID: 3566132544737468643, guid: ed351a2a5262e904e999c7f3e59b6a26, type: 3}
+  ammoData: {fileID: 11400000, guid: b388fa75667af42468f9eca06ff6665a, type: 2}

@@ -25,12 +25,12 @@ public class Gun : MonoBehaviour
         SetUpWeapon();
     }
 
-    public void Reload()
+    public void Reload(int ammoCount)
     {
-        StartCoroutine(ReloadCoroutine());
+        StartCoroutine(ReloadCoroutine(ammoCount));
     }
 
-    private IEnumerator ReloadCoroutine()
+    private IEnumerator ReloadCoroutine(int ammoCount)
     {
         OnReloadEvent?.Invoke(true);
         reloadTimer.Value = 0;
@@ -41,7 +41,7 @@ public class Gun : MonoBehaviour
             yield return null;
         }
         reloadTimer.Value = gunData.reloadTime;
-        bulletCount.Value = gunData.maxAmmo; //�ִ� AMMO ä���
+        bulletCount.Value = ammoCount; 
         OnReloadEvent?.Invoke(false);
     }
 
@@ -83,8 +83,7 @@ public class Gun : MonoBehaviour
 
     private void ShootProjectile()
     {
-        //Projectile newBullet = Instantiate(gunData.bulletPrefab);
-        Projectile newBullet = PoolManager.Instance.Pop(gunData.bulletPrefab.name) as Projectile;
+        Projectile newBullet = PoolManager.Instance.Pop(gunData.ammoData.bulletPrefab.name) as Projectile;
         newBullet.InitAndFire(firePosTrm, gunData.damage, gunData.knockBackPower);
     }
 

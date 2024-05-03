@@ -40,4 +40,9 @@ public class Health : MonoBehaviour
             DeadEvent?.Invoke();
         }
     }
+
+    public float GetNormalizedHealth()
+    {
+        return _currentHealth / (float)_maxHealth;
+    }
 }

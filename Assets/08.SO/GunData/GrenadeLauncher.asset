@@ -16,9 +16,10 @@ MonoBehaviour:
   gunName: GrenadeLauncher
   gunSpritePosition: {x: 0.8, y: 0, z: 0}
   firePosTrmPosition: {x: 0.832, y: 0.1, z: 0}
+  infiniteAmmo: 0
   damage: 20
   maxAmmo: 10
   reloadTime: 3
   cooldown: 1
   knockBackPower: 3
-  bulletPrefab: {fileID: 2158607083578926437, guid: 987bc706e36dd2a4ca69d229621962cc, type: 3}
+  ammoData: {fileID: 11400000, guid: 5ddc9bef20801f4409e4e43a61cc0faf, type: 2}

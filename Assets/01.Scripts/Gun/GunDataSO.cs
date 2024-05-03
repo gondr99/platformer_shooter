@@ -8,11 +8,13 @@ public class GunDataSO : ScriptableObject
     public Vector3 gunSpritePosition;
     public Vector3 firePosTrmPosition;
 
+    public bool infiniteAmmo;
+
     public int damage;
     public int maxAmmo;
     public float reloadTime;
     public float cooldown;
 
     public float knockBackPower;
-    public Projectile bulletPrefab;
+    public AmmoSO ammoData;
 }

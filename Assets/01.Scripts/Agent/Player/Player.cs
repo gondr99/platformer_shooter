@@ -1,4 +1,6 @@
+using System;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class Player : Agent
 {
@@ -7,6 +9,7 @@ public class Player : Agent
 
     #region component region
     public WeaponHolder WeaponCompo { get; private set; }
+    public PlayerAnimator PlayerAnimCompo { get; private set; }
     #endregion
 
     private bool _doubleJumpAvailable;
@@ -18,14 +21,21 @@ public class Player : Agent
         PlayerInput.JumpKeyEvent += HandleJumpKeydownEvent;
         JumpEvent.AddListener(HandleJumpEvent);
 
+        //Handle character change event
+        PlayerInput.OnCharacterChangeEvent += HandleCharacterChangeEvent;
+
         WeaponCompo = transform.Find("WeaponHolder").GetComponent<WeaponHolder>();
         WeaponCompo.Initialize(this);
+
+        PlayerAnimCompo = transform.Find("Visual").GetComponent<PlayerAnimator>();
+        PlayerAnimCompo.Initialize(this);
     }
 
     private void OnDisable()
     {
         PlayerInput.JumpKeyEvent -= HandleJumpKeydownEvent;
         JumpEvent.RemoveListener(HandleJumpEvent);
+        PlayerInput.OnCharacterChangeEvent -= HandleCharacterChangeEvent;
     }
 
     private void Update()
@@ -64,6 +74,15 @@ public class Player : Agent
         _timeInAir = 0;
         MovementCompo.Jump();
     }
+
+    private void HandleCharacterChangeEvent(int index)
+    {
+        if (!WeaponCompo.CanChangeWeapon()) return;
+
+        WeaponCompo.ChangeWeapon(index);
+        PlayerAnimCompo.ChangeCharacter(index);
+    }
+
 
     public override void SetDead()
     {

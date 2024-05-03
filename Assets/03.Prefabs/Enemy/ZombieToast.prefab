@@ -430,6 +430,7 @@ GameObject:
   - component: {fileID: 5560636794289363285}
   - component: {fileID: 6344659750380852730}
   - component: {fileID: 3290782830352333816}
+  - component: {fileID: 628912487584310271}
   m_Layer: 6
   m_Name: DeadFeedback
   m_TagString: Untagged
@@ -543,6 +544,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   effectItemName: ZombieExplosion
+--- !u!114 &628912487584310271
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6118140101812300365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae0184ee24526b24098761990c883c18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _dropTable: {fileID: 11400000, guid: 84270b1d8d16f9c4eacdeac0c2ab4124, type: 2}
+  _dropPower: 5
 --- !u!1001 &7476232430120871558
 PrefabInstance:
   m_ObjectHideFlags: 0

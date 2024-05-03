@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerManager : MonoSingleton<PlayerManager>
@@ -19,4 +20,12 @@ public class PlayerManager : MonoSingleton<PlayerManager>
         }
     }
     public Transform PlayerTrm => Player.transform;
+
+
+    public int coin;
+
+    public void AddCoin(int amount)
+    {
+        coin += amount;
+    }
 }

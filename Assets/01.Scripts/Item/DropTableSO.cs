@@ -1,18 +1,16 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DropTableSO : MonoBehaviour
+[Serializable]
+public struct DropInfo
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public ItemSO item;
+    public float dropRate;
+}
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+[CreateAssetMenu(menuName = "SO/Item/DropTable")]
+public class DropTableSO : ScriptableObject
+{
+    public List<DropInfo> tables;
 }
